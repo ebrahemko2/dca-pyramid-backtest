@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# Raw monthly downloads (regenerable via src/download_data.py)
+data/raw/
+*.zip
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
