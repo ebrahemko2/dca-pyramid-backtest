@@ -52,17 +52,21 @@ One parameter changed at a time; best value kept before moving to the next.
 | 5 | `sub_order_weights` | **2 : 3 : 4** | Slightly flatter than 1:2:4 |
 | 6 | `reentry_delay_bars` | **0** (unchanged) | Immediate re-entry best |
 
-### Optimized vs baseline
+### Results comparison
 
-| Metric | Baseline | Optimized |
-|--------|----------|-----------|
-| Final equity | 26,614 | **214,228** |
-| Return | +166% | **+2,042%** |
-| Max drawdown | 62.7% | 79.5% |
-| Cycles | 2,167 | 1,338 |
-| Profit factor | 2.11 | 1.69 |
+| Metric | Baseline | Pyramid-preserving | Profit-max (unconstrained) |
+|--------|----------|--------------------|----------------------------|
+| Final equity | 26,614 | **41,052** | 214,228 |
+| Return | +166% | **+311%** | +2,042% |
+| Max drawdown | 62.7% | **67.1%** | 79.5% |
+| Cycles | 2,167 | 1,629 | 1,338 |
+| Profit factor | 2.11 | **2.83** | 1.69 |
+| Level weights | 1:2:4:8 | **1:2:4:8** | 8:4:2:1 (inverted) |
 
-> The profit-max set puts most capital near shallow dips (inverted weights). Returns rise a lot, but drawdown also rises. A risk-aware alternative is saved under `results/risk_aware/`.
+**Recommended (keeps pyramid shape):** TP `1.2%`, initial `5%`, depths `2/8/20/40%`, level weights `1:2:4:8`, sub-weights `2:3:4`, re-entry `0`.  
+Saved under `results/pyramid_preserving/`.
+
+**Profit-max:** same but inverted level weights `8:4:2:1` — much higher return, much higher drawdown. Saved as main `results/summary.json`.
 
 Equity curve: `results/equity_curve.png`
 
