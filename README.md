@@ -70,6 +70,50 @@ Saved under `results/pyramid_preserving/`.
 
 Equity curve: `results/equity_curve.png`
 
+## Stop-loss upgrade (inverted / profit-max)
+
+The inverted ladder is strong in ranging markets but sits underwater for months in crashes (no SL). We swept hard stop-loss from \(P_0\) and from WAP, plus optional time-stops, on crash windows then validated on full history.
+
+**Crash windows used for design**
+- 2021-11 → 2022-12
+- 2024-12 → 2026-07
+
+**Best setting found**
+
+| Parameter | Value |
+|-----------|-------|
+| Stop loss | **5% below \(P_0\)** (`stop_loss_ref=p0`) |
+| Max hold | **72 hours** (optional; caps the longest stuck cycle) |
+| Rest | same profit-max inverted config (TP 1.2%, weights 8:4:2:1, …) |
+
+### Crash windows
+
+| Window | No SL | SL 5% \(P_0\) | SL 5% \(P_0\) + max hold 72h |
+|--------|-------|--------------|------------------------------|
+| 2021-11→2022-12 return | −70% | **+358%** | **+366%** |
+| Max DD | 79.5% | **14.1%** | **14.1%** |
+| Max hold (hours) | 9,466 | 105 | **72** |
+| 2024-12→2026-07 return | −43% | **+135%** | **+132%** |
+| Max DD | 65.6% | **14.8%** | **14.8%** |
+
+### Full history (2021-01 → 2026-07)
+
+| Metric | No SL | **SL 5% \(P_0\) + hold≤72h** |
+|--------|-------|-----------------------------|
+| Return | +2,042% | **+73,339%** |
+| Max drawdown | 79.5% | **21.1%** |
+| Avg hold (hours) | 36.5 | **5.6** |
+| Max hold (hours) | 32,400 (~3.7y) | **72** |
+| Win rate | 99.9% | 92.8% |
+| SL exits | 0 | 586 |
+
+Reference \(P_0\) beat WAP-based SL for this inverted config (capital is concentrated near entry, so a fixed −5% from entry cuts crashes cleanly).
+
+> Note: turnover and fees rise a lot with SL (many more closed cycles). Numbers assume 0.1% fee; live slippage/fees can shrink the edge.
+
+Artifacts: `results/stoploss_inverted/`  
+Re-run: `python src/optimize_stoploss.py`
+
 ## Setup
 
 ```bash
@@ -83,6 +127,9 @@ pip install -r requirements.txt
 # Download (if needed) + baseline + optimization
 python src/run_backtest.py
 
+# Stop-loss optimization for inverted config
+python src/optimize_stoploss.py
+
 # Download only
 python src/download_data.py
 ```
@@ -95,6 +142,7 @@ Results are written to `results/`:
 - `equity_curve_*.csv` / `equity_curve.png`
 - `pyramid_preserving/` — best settings while keeping classic `1:2:4:8` level weights
 - `risk_aware/` — stronger drawdown-penalized search
+- `stoploss_inverted/` — SL / max-hold search for inverted weights
 
 ## Optimization method
 
@@ -102,6 +150,8 @@ Coordinate descent over:
 `take_profit_pct` → `initial_pct` → `dca_depths` → `dca_level_weights` → `sub_order_weights` → `reentry_delay_bars`.
 
 Primary score = total return − mild penalty for drawdown above 20%.
+
+Stop-loss pass: sweep SL% × {`p0`,`wap`} on crash windows (score penalizes DD + long holds), then validate on full history; refine with `max_hold_bars`.
 
 ---
 
