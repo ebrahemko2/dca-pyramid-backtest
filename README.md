@@ -133,6 +133,44 @@ Re-run: `python src/optimize_stoploss.py`
 Artifacts: `results/tf_1m/`, `results/tf_1m_crash_sl/`  
 Re-run: `python src/run_backtest_1m.py` · `python src/optimize_sl_1m_crash_first.py`
 
+## Staged Recovery (partial size + escalate after loss)
+
+Idea you proposed:
+
+- **Normal:** buy 25% now + 25% at −3%, tight SL (~3%), TP; unused cash stays idle  
+- **After a loss → Recovery:** 50% now + 25% at −3% + 25% at −5%, wider SL (~10%)  
+- **After a win → back to Normal**
+
+### User baseline (as stated) on 1m
+
+| Window | Return | Max DD |
+|--------|--------|--------|
+| Full 1m | **−99.8%** | 99.8% |
+| Full 1h | −99.2% | 99.2% |
+| Crash 2022 | −89.7% | 90.5% |
+
+Tight normal SL (3%) + martingale-style recovery after losses blows up on fees/noise.
+
+### Optimized staged params (crash-first then full 1m)
+
+| | Normal | Recovery |
+|--|--|--|
+| Initial | **15%** | **50%** |
+| DCA | 25% @ **−5%** | 25% @ −3% + 25% @ **−8%** |
+| SL (from \(P_0\)) | **8%** | **20%** |
+| TP (from WAP) | **2%** | **1.2%** |
+
+| Window | User | Optimized |
+|--------|------|-----------|
+| Full 1m | −99.8% | **+23.4%** (DD 43%) |
+| Full 1h | −99.2% | −3.4% |
+| Crash 2022 | −89.7% | −21.6% |
+| Crash 2025–26 | −83.1% | −30.3% |
+
+Still underperforms buy&hold on full 1m (+153%), but the staging idea survives after widening SL/TP and cutting normal size.
+
+Artifacts: `results/staged_recovery/` · `python src/run_staged_recovery.py`
+
 ## Setup
 
 ```bash
