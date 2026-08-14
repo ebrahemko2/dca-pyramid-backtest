@@ -1,0 +1,193 @@
+{
+  "data": "ETHUSDT_1m",
+  "bars_full": 2933647,
+  "selected": {
+    "stop_loss_pct": 0.4,
+    "stop_loss_ref": "wap",
+    "take_profit_pct": 0.02,
+    "max_hold_hours": 0,
+    "max_hold_bars": 0,
+    "crash_combo": null,
+    "full": {
+      "param_initial_pct": 0.05,
+      "param_dca_level_weights": [
+        8,
+        4,
+        2,
+        1
+      ],
+      "param_sub_order_weights": [
+        2,
+        3,
+        4
+      ],
+      "param_dca_depths": [
+        0.02,
+        0.08,
+        0.2,
+        0.4
+      ],
+      "param_take_profit_pct": 0.02,
+      "param_fee_rate": 0.001,
+      "param_capital": 10000.0,
+      "param_reentry_delay_bars": 0,
+      "param_stop_loss_pct": 0.4,
+      "param_stop_loss_ref": "wap",
+      "param_max_hold_bars": 0,
+      "equity_final": 18048.808351207328,
+      "total_return_pct": 80.48808351207329,
+      "buy_hold_return_pct": 152.72041464275054,
+      "num_cycles": 874,
+      "win_rate": 98.74141876430205,
+      "avg_pnl_pct": 1.2932994416357495,
+      "max_drawdown_pct": 74.62415616335416,
+      "profit_factor": 1.0536697032834375,
+      "total_fees": 18383.581615722425,
+      "avg_hold_bars": 3356.575514874142,
+      "median_hold_bars": 268.0,
+      "max_hold_bars_seen": 298224.0,
+      "tp_exits": 863,
+      "sl_exits": 10,
+      "time_exits": 0
+    },
+    "crash_2022": {
+      "param_initial_pct": 0.05,
+      "param_dca_level_weights": [
+        8,
+        4,
+        2,
+        1
+      ],
+      "param_sub_order_weights": [
+        2,
+        3,
+        4
+      ],
+      "param_dca_depths": [
+        0.02,
+        0.08,
+        0.2,
+        0.4
+      ],
+      "param_take_profit_pct": 0.02,
+      "param_fee_rate": 0.001,
+      "param_capital": 10000.0,
+      "param_reentry_delay_bars": 0,
+      "param_stop_loss_pct": 0.4,
+      "param_stop_loss_ref": "wap",
+      "param_max_hold_bars": 0,
+      "equity_final": 3616.403967502435,
+      "total_return_pct": -63.83596032497565,
+      "buy_hold_return_pct": -72.02787586383712,
+      "num_cycles": 159,
+      "win_rate": 96.85534591194968,
+      "avg_pnl_pct": 0.681516522521482,
+      "max_drawdown_pct": 74.62415616335417,
+      "profit_factor": 0.4961117874739996,
+      "total_fees": 762.6137882187627,
+      "avg_hold_bars": 3849.062893081761,
+      "median_hold_bars": 308.0,
+      "max_hold_bars_seen": 126111.0,
+      "tp_exits": 154,
+      "sl_exits": 4,
+      "time_exits": 0
+    },
+    "crash_2025_26": {
+      "param_initial_pct": 0.05,
+      "param_dca_level_weights": [
+        8,
+        4,
+        2,
+        1
+      ],
+      "param_sub_order_weights": [
+        2,
+        3,
+        4
+      ],
+      "param_dca_depths": [
+        0.02,
+        0.08,
+        0.2,
+        0.4
+      ],
+      "param_take_profit_pct": 0.02,
+      "param_fee_rate": 0.001,
+      "param_capital": 10000.0,
+      "param_reentry_delay_bars": 0,
+      "param_stop_loss_pct": 0.4,
+      "param_stop_loss_ref": "wap",
+      "param_max_hold_bars": 0,
+      "equity_final": 4387.947319123505,
+      "total_return_pct": -56.12052680876496,
+      "buy_hold_return_pct": -48.161876864513175,
+      "num_cycles": 214,
+      "win_rate": 97.66355140186917,
+      "avg_pnl_pct": 0.9295760403515316,
+      "max_drawdown_pct": 68.50934270222396,
+      "profit_factor": 0.6101972469140117,
+      "total_fees": 1050.9989418318182,
+      "avg_hold_bars": 4084.4906542056074,
+      "median_hold_bars": 275.0,
+      "max_hold_bars_seen": 123260.0,
+      "tp_exits": 209,
+      "sl_exits": 4,
+      "time_exits": 0
+    }
+  },
+  "best_overall_full_score": {
+    "stop_loss_pct": 0.4,
+    "stop_loss_ref": "wap",
+    "take_profit_pct": 0.02,
+    "max_hold_hours": 0,
+    "max_hold_bars": 0,
+    "crash_combo": null,
+    "full": {
+      "param_initial_pct": 0.05,
+      "param_dca_level_weights": [
+        8,
+        4,
+        2,
+        1
+      ],
+      "param_sub_order_weights": [
+        2,
+        3,
+        4
+      ],
+      "param_dca_depths": [
+        0.02,
+        0.08,
+        0.2,
+        0.4
+      ],
+      "param_take_profit_pct": 0.02,
+      "param_fee_rate": 0.001,
+      "param_capital": 10000.0,
+      "param_reentry_delay_bars": 0,
+      "param_stop_loss_pct": 0.4,
+      "param_stop_loss_ref": "wap",
+      "param_max_hold_bars": 0,
+      "equity_final": 18048.808351207328,
+      "total_return_pct": 80.48808351207329,
+      "buy_hold_return_pct": 152.72041464275054,
+      "num_cycles": 874,
+      "win_rate": 98.74141876430205,
+      "avg_pnl_pct": 1.2932994416357495,
+      "max_drawdown_pct": 74.62415616335416,
+      "profit_factor": 1.0536697032834375,
+      "total_fees": 18383.581615722425,
+      "avg_hold_bars": 3356.575514874142,
+      "median_hold_bars": 268.0,
+      "max_hold_bars_seen": 298224.0,
+      "tp_exits": 863,
+      "sl_exits": 10,
+      "time_exits": 0
+    },
+    "crash_2022": null,
+    "crash_2025_26": null
+  },
+  "best_short24": null,
+  "note": "Crash-first SL search on 1m. Tight SL (e.g. 5%) overtrades and dies on fees/path noise; wider SL or no-SL with higher TP better preserves capital. Short-hold constraint applied.",
+  "elapsed_sec": 492.1227514743805
+}

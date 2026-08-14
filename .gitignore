@@ -10,6 +10,10 @@ venv/
 data/raw/
 *.zip
 
+# Large merged tick/minute dumps (regenerate locally)
+data/merged/ETHUSDT_1m.csv
+data/merged/*_1m.csv
+
 # Editor / OS
 .DS_Store
 .idea/

@@ -1,0 +1,114 @@
+{
+  "best_params": {
+    "initial_pct": 0.05,
+    "dca_level_weights": [
+      8,
+      4,
+      2,
+      1
+    ],
+    "sub_order_weights": [
+      2,
+      3,
+      4
+    ],
+    "dca_depths": [
+      0.02,
+      0.08,
+      0.2,
+      0.4
+    ],
+    "take_profit_pct": 0.02,
+    "fee_rate": 0.001,
+    "capital": 10000.0,
+    "reentry_delay_bars": 0,
+    "stop_loss_pct": 0.0,
+    "stop_loss_ref": "p0",
+    "max_hold_bars": 0
+  },
+  "best_full": {
+    "param_initial_pct": 0.05,
+    "param_dca_level_weights": [
+      8,
+      4,
+      2,
+      1
+    ],
+    "param_sub_order_weights": [
+      2,
+      3,
+      4
+    ],
+    "param_dca_depths": [
+      0.02,
+      0.08,
+      0.2,
+      0.4
+    ],
+    "param_take_profit_pct": 0.02,
+    "param_fee_rate": 0.001,
+    "param_capital": 10000.0,
+    "param_reentry_delay_bars": 0,
+    "param_stop_loss_pct": 0.0,
+    "param_stop_loss_ref": "p0",
+    "param_max_hold_bars": 0,
+    "equity_final": 18351.05840092031,
+    "total_return_pct": 83.51058400920309,
+    "buy_hold_return_pct": 152.72041464275054,
+    "num_cycles": 221,
+    "win_rate": 99.5475113122172,
+    "avg_pnl_pct": 1.52572689877581,
+    "max_drawdown_pct": 80.12693946200137,
+    "profit_factor": 1.330120011215304,
+    "total_fees": 3844.3658126864284,
+    "avg_hold_bars": 13274.420814479638,
+    "median_hold_bars": 221.0,
+    "max_hold_bars_seen": 1944791.0,
+    "tp_exits": 220,
+    "sl_exits": 0,
+    "time_exits": 0
+  },
+  "prior_1h_tuned_on_1m": {
+    "param_initial_pct": 0.05,
+    "param_dca_level_weights": [
+      8,
+      4,
+      2,
+      1
+    ],
+    "param_sub_order_weights": [
+      2,
+      3,
+      4
+    ],
+    "param_dca_depths": [
+      0.02,
+      0.08,
+      0.2,
+      0.4
+    ],
+    "param_take_profit_pct": 0.012,
+    "param_fee_rate": 0.001,
+    "param_capital": 10000.0,
+    "param_reentry_delay_bars": 0,
+    "param_stop_loss_pct": 0.05,
+    "param_stop_loss_ref": "p0",
+    "param_max_hold_bars": 4320,
+    "equity_final": 102.6488203539803,
+    "total_return_pct": -98.9735117964602,
+    "buy_hold_return_pct": 152.72041464275054,
+    "num_cycles": 9901,
+    "win_rate": 88.89001110998889,
+    "avg_pnl_pct": 0.4926438826648016,
+    "max_drawdown_pct": 99.13506722875802,
+    "profit_factor": 0.8501278187420704,
+    "total_fees": 14939.736964638907,
+    "avg_hold_bars": 296.2980507019493,
+    "median_hold_bars": 76.0,
+    "max_hold_bars_seen": 4320.0,
+    "tp_exits": 8794,
+    "sl_exits": 1063,
+    "time_exits": 43
+  },
+  "note": "1h OHLC backtests overstate edge (same-bar low-fill then high-TP path bias). 1m is closer to real path; params retuned here."
+}
