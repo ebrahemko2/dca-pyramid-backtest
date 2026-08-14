@@ -114,6 +114,25 @@ Reference \(P_0\) beat WAP-based SL for this inverted config (capital is concent
 Artifacts: `results/stoploss_inverted/`  
 Re-run: `python src/optimize_stoploss.py`
 
+## 1-minute backtest (path-accurate) + crash-first SL search
+
+1h results were optimistic (same-bar Low→fill then High→TP bias). On **ETHUSDT 1m** (2,933,647 bars, 2021-01→2026-07):
+
+| Config | Full return | Max DD | Avg hold | Max hold |
+|--------|-------------|--------|----------|----------|
+| Old 1h-tuned SL 5% \(P_0\) + hold≤72h | **−99%** | 99% | ~5h | 72h |
+| No SL, TP 1.2% | +72% | 80% | ~102h | ~3.7y |
+| No SL, TP 2.0% | **+83.5%** | 80% | ~221h | ~3.7y |
+| **Best SL on 1m: SL 40% from WAP, TP 2%** | **+80.5%** | **75%** | **~56h** | **~207d** |
+| Any short-hold cap (≤48h) with/without SL | −61% to −88% | high | ≤48h | 48h |
+
+**Crash windows (1m):** no SL setting turned 2022 / 2025–26 into profit while keeping short holds. Tight SL shortens holds but dies on fees/noise; forced time-stops also lose on full history.
+
+**Honest tradeoff on 1m:** highest profit needs long underwater holds; forcing short holds destroys expectancy. Best compromise found: `SL=40%` from WAP + `TP=2%` (no time-stop).
+
+Artifacts: `results/tf_1m/`, `results/tf_1m_crash_sl/`  
+Re-run: `python src/run_backtest_1m.py` · `python src/optimize_sl_1m_crash_first.py`
+
 ## Setup
 
 ```bash
