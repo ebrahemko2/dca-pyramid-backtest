@@ -1,0 +1,314 @@
+{
+  "base_config": "inverted_profit_max",
+  "no_sl_full": {
+    "param_initial_pct": 0.05,
+    "param_dca_level_weights": [
+      8,
+      4,
+      2,
+      1
+    ],
+    "param_sub_order_weights": [
+      2,
+      3,
+      4
+    ],
+    "param_dca_depths": [
+      0.02,
+      0.08,
+      0.2,
+      0.4
+    ],
+    "param_take_profit_pct": 0.012,
+    "param_fee_rate": 0.001,
+    "param_capital": 10000.0,
+    "param_reentry_delay_bars": 0,
+    "param_stop_loss_pct": 0.0,
+    "param_stop_loss_ref": "wap",
+    "param_max_hold_bars": 0,
+    "equity_final": 214228.18700786252,
+    "total_return_pct": 2042.2818700786252,
+    "buy_hold_return_pct": 153.7360197256392,
+    "num_cycles": 1338,
+    "win_rate": 99.9252615844544,
+    "avg_pnl_pct": 0.9536732991823332,
+    "max_drawdown_pct": 79.51630990999557,
+    "profit_factor": 1.6928438809323902,
+    "total_fees": 101302.17835919603,
+    "avg_hold_bars": 36.54559043348281,
+    "median_hold_bars": 1.0,
+    "max_hold_bars_seen": 32400.0,
+    "tp_exits": 1337,
+    "sl_exits": 0,
+    "time_exits": 0
+  },
+  "no_sl_crash_2022": {
+    "param_initial_pct": 0.05,
+    "param_dca_level_weights": [
+      8,
+      4,
+      2,
+      1
+    ],
+    "param_sub_order_weights": [
+      2,
+      3,
+      4
+    ],
+    "param_dca_depths": [
+      0.02,
+      0.08,
+      0.2,
+      0.4
+    ],
+    "param_take_profit_pct": 0.012,
+    "param_fee_rate": 0.001,
+    "param_capital": 10000.0,
+    "param_reentry_delay_bars": 0,
+    "param_stop_loss_pct": 0.0,
+    "param_stop_loss_ref": "wap",
+    "param_max_hold_bars": 0,
+    "equity_final": 3003.290341605507,
+    "total_return_pct": -69.96709658394494,
+    "buy_hold_return_pct": -72.26310681185907,
+    "num_cycles": 36,
+    "win_rate": 97.22222222222221,
+    "avg_pnl_pct": -1.0550842064073533,
+    "max_drawdown_pct": 79.51630990999557,
+    "profit_factor": 0.1340721212874981,
+    "total_fees": 232.44281876506727,
+    "avg_hold_bars": 283.3611111111111,
+    "median_hold_bars": 4.5,
+    "max_hold_bars_seen": 9466.0,
+    "tp_exits": 35,
+    "sl_exits": 0,
+    "time_exits": 0
+  },
+  "no_sl_crash_2025_26": {
+    "param_initial_pct": 0.05,
+    "param_dca_level_weights": [
+      8,
+      4,
+      2,
+      1
+    ],
+    "param_sub_order_weights": [
+      2,
+      3,
+      4
+    ],
+    "param_dca_depths": [
+      0.02,
+      0.08,
+      0.2,
+      0.4
+    ],
+    "param_take_profit_pct": 0.012,
+    "param_fee_rate": 0.001,
+    "param_capital": 10000.0,
+    "param_reentry_delay_bars": 0,
+    "param_stop_loss_pct": 0.0,
+    "param_stop_loss_ref": "wap",
+    "param_max_hold_bars": 0,
+    "equity_final": 5722.0525418525485,
+    "total_return_pct": -42.77947458147452,
+    "buy_hold_return_pct": -48.024150476882454,
+    "num_cycles": 96,
+    "win_rate": 98.95833333333334,
+    "avg_pnl_pct": 0.3969023620745987,
+    "max_drawdown_pct": 65.5609284340602,
+    "profit_factor": 0.4285738323348498,
+    "total_fees": 665.6468389550255,
+    "avg_hold_bars": 151.76041666666666,
+    "median_hold_bars": 4.5,
+    "max_hold_bars_seen": 7116.0,
+    "tp_exits": 95,
+    "sl_exits": 0,
+    "time_exits": 0
+  },
+  "selected": {
+    "stop_loss_pct": 0.05,
+    "stop_loss_ref": "p0",
+    "max_hold_bars": 72,
+    "crash_combo_score": 244.98397586938245,
+    "full": {
+      "param_initial_pct": 0.05,
+      "param_dca_level_weights": [
+        8,
+        4,
+        2,
+        1
+      ],
+      "param_sub_order_weights": [
+        2,
+        3,
+        4
+      ],
+      "param_dca_depths": [
+        0.02,
+        0.08,
+        0.2,
+        0.4
+      ],
+      "param_take_profit_pct": 0.012,
+      "param_fee_rate": 0.001,
+      "param_capital": 10000.0,
+      "param_reentry_delay_bars": 0,
+      "param_stop_loss_pct": 0.05,
+      "param_stop_loss_ref": "p0",
+      "param_max_hold_bars": 72,
+      "equity_final": 7343850.884527903,
+      "total_return_pct": 73338.50884527904,
+      "buy_hold_return_pct": 153.7360197256392,
+      "num_cycles": 8691,
+      "win_rate": 92.82015878494995,
+      "avg_pnl_pct": 0.6960902143733019,
+      "max_drawdown_pct": 21.0957937650634,
+      "profit_factor": 1.237188548756827,
+      "total_fees": 9616723.116107786,
+      "avg_hold_bars": 5.62628005983201,
+      "median_hold_bars": 2.0,
+      "max_hold_bars_seen": 72.0,
+      "tp_exits": 8059,
+      "sl_exits": 586,
+      "time_exits": 45
+    },
+    "crash_2022": {
+      "param_initial_pct": 0.05,
+      "param_dca_level_weights": [
+        8,
+        4,
+        2,
+        1
+      ],
+      "param_sub_order_weights": [
+        2,
+        3,
+        4
+      ],
+      "param_dca_depths": [
+        0.02,
+        0.08,
+        0.2,
+        0.4
+      ],
+      "param_take_profit_pct": 0.012,
+      "param_fee_rate": 0.001,
+      "param_capital": 10000.0,
+      "param_reentry_delay_bars": 0,
+      "param_stop_loss_pct": 0.05,
+      "param_stop_loss_ref": "p0",
+      "param_max_hold_bars": 72,
+      "equity_final": 46617.368072196354,
+      "total_return_pct": 366.17368072196354,
+      "buy_hold_return_pct": -72.26310681185907,
+      "num_cycles": 2171,
+      "win_rate": 92.90649470290188,
+      "avg_pnl_pct": 0.694442299715394,
+      "max_drawdown_pct": 14.142319132565692,
+      "profit_factor": 1.467317964397665,
+      "total_fees": 27994.232674035204,
+      "avg_hold_bars": 4.698756333486872,
+      "median_hold_bars": 2.0,
+      "max_hold_bars_seen": 72.0,
+      "tp_exits": 2016,
+      "sl_exits": 149,
+      "time_exits": 5
+    },
+    "crash_2025_26": {
+      "param_initial_pct": 0.05,
+      "param_dca_level_weights": [
+        8,
+        4,
+        2,
+        1
+      ],
+      "param_sub_order_weights": [
+        2,
+        3,
+        4
+      ],
+      "param_dca_depths": [
+        0.02,
+        0.08,
+        0.2,
+        0.4
+      ],
+      "param_take_profit_pct": 0.012,
+      "param_fee_rate": 0.001,
+      "param_capital": 10000.0,
+      "param_reentry_delay_bars": 0,
+      "param_stop_loss_pct": 0.05,
+      "param_stop_loss_ref": "p0",
+      "param_max_hold_bars": 72,
+      "equity_final": 23202.837781223447,
+      "total_return_pct": 132.02837781223445,
+      "buy_hold_return_pct": -48.024150476882454,
+      "num_cycles": 2130,
+      "win_rate": 91.73708920187794,
+      "avg_pnl_pct": 0.6406204325008612,
+      "max_drawdown_pct": 14.79565634291678,
+      "profit_factor": 1.218199690541608,
+      "total_fees": 18479.841656800654,
+      "avg_hold_bars": 6.839906103286385,
+      "median_hold_bars": 3.0,
+      "max_hold_bars_seen": 72.0,
+      "tp_exits": 1953,
+      "sl_exits": 168,
+      "time_exits": 8
+    }
+  },
+  "alt_short_hold": {
+    "stop_loss_pct": 0.0,
+    "stop_loss_ref": "wap",
+    "max_hold_bars": 24,
+    "full": {
+      "param_initial_pct": 0.05,
+      "param_dca_level_weights": [
+        8,
+        4,
+        2,
+        1
+      ],
+      "param_sub_order_weights": [
+        2,
+        3,
+        4
+      ],
+      "param_dca_depths": [
+        0.02,
+        0.08,
+        0.2,
+        0.4
+      ],
+      "param_take_profit_pct": 0.012,
+      "param_fee_rate": 0.001,
+      "param_capital": 10000.0,
+      "param_reentry_delay_bars": 0,
+      "param_stop_loss_pct": 0.0,
+      "param_stop_loss_ref": "wap",
+      "param_max_hold_bars": 24,
+      "equity_final": 18142148.49644517,
+      "total_return_pct": 181321.48496445172,
+      "buy_hold_return_pct": 153.7360197256392,
+      "num_cycles": 8116,
+      "win_rate": 91.38738294726465,
+      "avg_pnl_pct": 0.7249447326632622,
+      "max_drawdown_pct": 36.04312145238991,
+      "profit_factor": 1.2817753077132144,
+      "total_fees": 22797045.413715348,
+      "avg_hold_bars": 6.024889107934944,
+      "median_hold_bars": 2.0,
+      "max_hold_bars_seen": 24.0,
+      "tp_exits": 7294,
+      "sl_exits": 0,
+      "time_exits": 821
+    }
+  },
+  "improvement_vs_nosl": {
+    "full_return_pp": 71296.2269752004,
+    "full_dd_pp": -58.420516144932165,
+    "avg_hold_delta": -30.9193103736508,
+    "max_hold_delta": -32328.0
+  }
+}

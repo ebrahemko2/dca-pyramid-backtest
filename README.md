@@ -93,6 +93,7 @@ Results are written to `results/`:
 - `optimization_history.csv` — every trial
 - `cycles_baseline.csv` / `cycles_final.csv`
 - `equity_curve_*.csv` / `equity_curve.png`
+- `pyramid_preserving/` — best settings while keeping classic `1:2:4:8` level weights
 - `risk_aware/` — stronger drawdown-penalized search
 
 ## Optimization method

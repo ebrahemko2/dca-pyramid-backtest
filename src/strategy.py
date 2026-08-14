@@ -77,6 +77,12 @@ class StrategyParams:
     capital: float = 10_000.0
     # Re-entry: after TP, wait this many bars before starting a new cycle at market.
     reentry_delay_bars: int = 0
+    # Stop loss: 0 disables. Exit when price <= ref * (1 - stop_loss_pct).
+    stop_loss_pct: float = 0.0
+    # Reference for SL: "wap" (avg entry) or "p0" (cycle entry).
+    stop_loss_ref: str = "wap"
+    # Time stop: 0 disables. Force-close after this many bars in cycle.
+    max_hold_bars: int = 0
 
     def ladder(self) -> list[dict[str, float]]:
         return build_ladder(
@@ -108,6 +114,7 @@ class TradeCycle:
     pnl_pct: float = 0.0
     fills: int = 0
     max_dd_from_p0: float = 0.0
+    hold_bars: int = 0
     reason: str = ""
 
 
@@ -123,6 +130,12 @@ class BacktestResult:
     max_drawdown_pct: float
     profit_factor: float
     total_fees: float
+    avg_hold_bars: float = 0.0
+    median_hold_bars: float = 0.0
+    max_hold_bars_seen: float = 0.0
+    tp_exits: int = 0
+    sl_exits: int = 0
+    time_exits: int = 0
     cycles: list[TradeCycle] = field(default_factory=list)
     equity_curve: pd.Series | None = None
 
@@ -138,6 +151,12 @@ class BacktestResult:
             "max_drawdown_pct": self.max_drawdown_pct,
             "profit_factor": self.profit_factor,
             "total_fees": self.total_fees,
+            "avg_hold_bars": self.avg_hold_bars,
+            "median_hold_bars": self.median_hold_bars,
+            "max_hold_bars_seen": self.max_hold_bars_seen,
+            "tp_exits": self.tp_exits,
+            "sl_exits": self.sl_exits,
+            "time_exits": self.time_exits,
         }
 
 
@@ -146,23 +165,29 @@ def run_backtest(df: pd.DataFrame, params: StrategyParams | None = None) -> Back
     Event-driven spot backtest on OHLC bars.
 
     Cycle logic:
-      1. At cycle start, market-buy initial allocation at open (or first close).
+      1. At cycle start, market-buy initial allocation at open.
       2. Remaining ladder levels are limit buys at P0 * (1 - drop).
       3. A limit fills if bar low <= limit price (fill at limit).
       4. After every fill, update WAP and TP = WAP * (1 + take_profit_pct).
-      5. If bar high >= TP, exit entire position at TP (conservative fill).
-      6. After exit, start a new cycle (optionally after delay) with remaining cash.
+      5. Optional SL: if bar low <= ref*(1-stop_loss_pct), exit at SL
+         (adverse fill if TP and SL both possible same bar).
+      6. Else if bar high >= TP, exit entire position at TP.
+      7. Optional time-stop: force close at bar close after max_hold_bars.
+      8. After exit, start a new cycle (optionally after delay).
 
     Capital is recycled cycle-to-cycle (compounding). Unfilled ladder cash stays idle
-    until filled or cycle ends (on TP, unfilled cash remains cash).
+    until filled or cycle ends (unfilled cash remains cash).
     """
     params = params or StrategyParams()
+    if params.stop_loss_ref not in ("wap", "p0"):
+        raise ValueError("stop_loss_ref must be 'wap' or 'p0'")
     ladder = params.ladder()
     fee = params.fee_rate
 
     opens = df["open"].to_numpy(dtype=float)
     highs = df["high"].to_numpy(dtype=float)
     lows = df["low"].to_numpy(dtype=float)
+    closes = df["close"].to_numpy(dtype=float)
     times = df["datetime"].to_numpy()
     n = len(df)
 
@@ -175,13 +200,14 @@ def run_backtest(df: pd.DataFrame, params: StrategyParams | None = None) -> Back
     in_cycle = False
     p0 = 0.0
     qty = 0.0
-    cost_quote = 0.0  # net quote paid for holdings (excl. fee accounted separately via cash)
-    spent_for_avg = 0.0  # quote incl. for WAP (price * qty before fee)
+    cost_quote = 0.0
+    spent_for_avg = 0.0
     filled_flags: list[bool] = []
     cycle_cash_budget = 0.0
     cycle_cash_left = 0.0
     pending_reentry = 0
     cycle: TradeCycle | None = None
+    cycle_start_i = 0
     peak_equity = cash
     max_dd = 0.0
 
@@ -189,9 +215,34 @@ def run_backtest(df: pd.DataFrame, params: StrategyParams | None = None) -> Back
         return spent_for_avg / qty if qty > 0 else 0.0
 
     def mark_equity(i: int) -> float:
-        # Mark-to-market at close
-        eq = cash + qty * float(df["close"].iloc[i])
-        return eq
+        return cash + qty * closes[i]
+
+    def close_cycle(i: int, exit_px: float, reason: str) -> None:
+        nonlocal cash, total_fees, qty, spent_for_avg, cost_quote, in_cycle, cycle
+        nonlocal pending_reentry, cycle_start_i
+        assert cycle is not None
+        gross = qty * exit_px
+        fee_paid = gross * fee
+        net = gross - fee_paid
+        cash += net
+        total_fees += fee_paid
+        cycle.exit_time = times[i]
+        cycle.exit_price = exit_px
+        cycle.qty = qty
+        cycle.cost_quote = cost_quote
+        cycle.proceeds = net
+        cycle.pnl = net - cost_quote
+        cycle.pnl_pct = cycle.pnl / cost_quote if cost_quote else 0.0
+        cycle.avg_entry = wap()
+        cycle.hold_bars = i - cycle_start_i + 1
+        cycle.reason = reason
+        cycles.append(cycle)
+        qty = 0.0
+        spent_for_avg = 0.0
+        cost_quote = 0.0
+        in_cycle = False
+        cycle = None
+        pending_reentry = params.reentry_delay_bars
 
     i = 0
     while i < n:
@@ -201,7 +252,10 @@ def run_backtest(df: pd.DataFrame, params: StrategyParams | None = None) -> Back
                 pending_reentry -= 1
                 equity_hist[i] = mark_equity(i)
                 peak_equity = max(peak_equity, equity_hist[i])
-                max_dd = max(max_dd, (peak_equity - equity_hist[i]) / peak_equity if peak_equity else 0.0)
+                max_dd = max(
+                    max_dd,
+                    (peak_equity - equity_hist[i]) / peak_equity if peak_equity else 0.0,
+                )
                 i += 1
                 continue
 
@@ -210,7 +264,6 @@ def run_backtest(df: pd.DataFrame, params: StrategyParams | None = None) -> Back
                 i += 1
                 continue
 
-            # Begin cycle at this bar's open
             p0 = opens[i]
             cycle_cash_budget = cash
             cycle_cash_left = cash
@@ -219,9 +272,9 @@ def run_backtest(df: pd.DataFrame, params: StrategyParams | None = None) -> Back
             cost_quote = 0.0
             spent_for_avg = 0.0
             in_cycle = True
+            cycle_start_i = i
             cycle = TradeCycle(entry_time=times[i], p0=p0)
 
-            # Immediate initial buy at open
             init = ladder[0]
             alloc_quote = cycle_cash_budget * init["alloc"]
             if alloc_quote > cycle_cash_left:
@@ -233,7 +286,7 @@ def run_backtest(df: pd.DataFrame, params: StrategyParams | None = None) -> Back
             cycle_cash_left -= alloc_quote
             total_fees += fee_paid
             qty += buy_qty
-            spent_for_avg += buy_quote  # effective base cost at fill price
+            spent_for_avg += buy_quote
             cost_quote += alloc_quote
             filled_flags[0] = True
             cycle.fills = 1
@@ -241,13 +294,8 @@ def run_backtest(df: pd.DataFrame, params: StrategyParams | None = None) -> Back
 
         assert cycle is not None
 
-        # Track drawdown from P0 within cycle
         bar_dd = (p0 - lows[i]) / p0 if p0 > 0 else 0.0
         cycle.max_dd_from_p0 = max(cycle.max_dd_from_p0, bar_dd)
-
-        # Fill pending DCA limits (skip initial which is index 0)
-        # Process in order of drop (already sorted)
-        tp_price = wap() * (1.0 + params.take_profit_pct) if qty > 0 else 0.0
 
         for j in range(1, len(ladder)):
             if filled_flags[j]:
@@ -272,75 +320,55 @@ def run_backtest(df: pd.DataFrame, params: StrategyParams | None = None) -> Back
                 filled_flags[j] = True
                 cycle.fills += 1
                 cycle.avg_entry = wap()
-                tp_price = cycle.avg_entry * (1.0 + params.take_profit_pct)
 
-        # Check take-profit against bar high (after buys on this bar)
+        exited = False
         if qty > 0:
-            tp_price = wap() * (1.0 + params.take_profit_pct)
-            # Conservative: if both fill and TP possible same bar, assume buys first
-            # then TP if high still reaches TP.
-            if highs[i] >= tp_price:
-                # Exit at TP
-                exit_px = tp_price
-                gross = qty * exit_px
-                fee_paid = gross * fee
-                net = gross - fee_paid
-                cash += net
-                total_fees += fee_paid
-                cycle.exit_time = times[i]
-                cycle.exit_price = exit_px
-                cycle.qty = qty
-                cycle.cost_quote = cost_quote
-                cycle.proceeds = net
-                cycle.pnl = net - cost_quote
-                cycle.pnl_pct = cycle.pnl / cost_quote if cost_quote else 0.0
-                cycle.avg_entry = wap()
-                cycle.reason = "take_profit"
-                cycles.append(cycle)
+            avg = wap()
+            tp_price = avg * (1.0 + params.take_profit_pct)
+            sl_price = 0.0
+            if params.stop_loss_pct and params.stop_loss_pct > 0:
+                ref = avg if params.stop_loss_ref == "wap" else p0
+                sl_price = ref * (1.0 - params.stop_loss_pct)
 
-                qty = 0.0
-                spent_for_avg = 0.0
-                cost_quote = 0.0
-                in_cycle = False
-                cycle = None
-                pending_reentry = params.reentry_delay_bars
+            hit_tp = highs[i] >= tp_price
+            hit_sl = sl_price > 0 and lows[i] <= sl_price
 
-        equity_hist[i] = cash + qty * float(df["close"].iloc[i])
+            # Adverse assumption: if both TP and SL possible in same bar, take SL.
+            if hit_sl:
+                close_cycle(i, sl_price, "stop_loss")
+                exited = True
+            elif hit_tp:
+                close_cycle(i, tp_price, "take_profit")
+                exited = True
+            elif (
+                params.max_hold_bars > 0
+                and (i - cycle_start_i + 1) >= params.max_hold_bars
+            ):
+                close_cycle(i, closes[i], "time_stop")
+                exited = True
+
+        equity_hist[i] = mark_equity(i)
         peak_equity = max(peak_equity, equity_hist[i])
         if peak_equity > 0:
             max_dd = max(max_dd, (peak_equity - equity_hist[i]) / peak_equity)
         i += 1
 
-    # Force-close open cycle at last close
     if in_cycle and qty > 0 and cycle is not None:
-        exit_px = float(df["close"].iloc[-1])
-        gross = qty * exit_px
-        fee_paid = gross * fee
-        net = gross - fee_paid
-        cash += net
-        total_fees += fee_paid
-        cycle.exit_time = times[-1]
-        cycle.exit_price = exit_px
-        cycle.qty = qty
-        cycle.cost_quote = cost_quote
-        cycle.proceeds = net
-        cycle.pnl = net - cost_quote
-        cycle.pnl_pct = cycle.pnl / cost_quote if cost_quote else 0.0
-        cycle.avg_entry = wap()
-        cycle.reason = "eod_close"
-        cycles.append(cycle)
-        qty = 0.0
-        in_cycle = False
+        close_cycle(n - 1, closes[-1], "eod_close")
 
     equity_final = cash
     total_return_pct = (equity_final / params.capital - 1.0) * 100.0
-    bh = (float(df["close"].iloc[-1]) / float(df["close"].iloc[0]) - 1.0) * 100.0
+    bh = (closes[-1] / closes[0] - 1.0) * 100.0
 
-    closed = [c for c in cycles if c.reason == "take_profit"]
-    wins = [c for c in closed if c.pnl > 0]
-    losses = [c for c in cycles if c.pnl <= 0]
-    win_rate = (len(wins) / len(closed) * 100.0) if closed else 0.0
-    avg_pnl = float(np.mean([c.pnl_pct for c in closed]) * 100.0) if closed else 0.0
+    holds = [float(c.hold_bars) for c in cycles]
+    tp_exits = sum(1 for c in cycles if c.reason == "take_profit")
+    sl_exits = sum(1 for c in cycles if c.reason == "stop_loss")
+    time_exits = sum(1 for c in cycles if c.reason == "time_stop")
+
+    # Win rate over all closed cycles (not only TP)
+    wins = [c for c in cycles if c.pnl > 0]
+    win_rate = (len(wins) / len(cycles) * 100.0) if cycles else 0.0
+    avg_pnl = float(np.mean([c.pnl_pct for c in cycles]) * 100.0) if cycles else 0.0
     gross_profit = sum(c.pnl for c in cycles if c.pnl > 0)
     gross_loss = abs(sum(c.pnl for c in cycles if c.pnl < 0))
     profit_factor = (gross_profit / gross_loss) if gross_loss > 1e-12 else float("inf")
@@ -358,6 +386,12 @@ def run_backtest(df: pd.DataFrame, params: StrategyParams | None = None) -> Back
         max_drawdown_pct=max_dd * 100.0,
         profit_factor=profit_factor if profit_factor != float("inf") else 999.0,
         total_fees=total_fees,
+        avg_hold_bars=float(np.mean(holds)) if holds else 0.0,
+        median_hold_bars=float(np.median(holds)) if holds else 0.0,
+        max_hold_bars_seen=float(np.max(holds)) if holds else 0.0,
+        tp_exits=tp_exits,
+        sl_exits=sl_exits,
+        time_exits=time_exits,
         cycles=cycles,
         equity_curve=equity_curve,
     )
@@ -373,13 +407,21 @@ def print_report(result: BacktestResult, title: str = "Backtest") -> None:
     print(f"Strategy return     : {result.total_return_pct:+.2f}%")
     print(f"Buy & hold return   : {result.buy_hold_return_pct:+.2f}%")
     print(f"Cycles              : {result.num_cycles}")
-    print(f"Win rate (TP exits) : {result.win_rate:.1f}%")
-    print(f"Avg TP PnL %        : {result.avg_pnl_pct:+.3f}%")
+    print(f"Win rate (all)      : {result.win_rate:.1f}%")
+    print(f"Avg cycle PnL %     : {result.avg_pnl_pct:+.3f}%")
     print(f"Max drawdown        : {result.max_drawdown_pct:.2f}%")
     print(f"Profit factor       : {result.profit_factor:.3f}")
     print(f"Total fees          : {result.total_fees:,.2f}")
     print(
+        f"Hold bars avg/med/max: {result.avg_hold_bars:.1f} / "
+        f"{result.median_hold_bars:.1f} / {result.max_hold_bars_seen:.0f}"
+    )
+    print(
+        f"Exits TP/SL/Time    : {result.tp_exits} / {result.sl_exits} / {result.time_exits}"
+    )
+    print(
         f"Params: init={p.initial_pct:.3f} tp={p.take_profit_pct:.4f} "
+        f"sl={p.stop_loss_pct:.4f}({p.stop_loss_ref}) max_hold={p.max_hold_bars} "
         f"depths={list(p.dca_depths)} lvl_w={list(p.dca_level_weights)} "
         f"sub_w={list(p.sub_order_weights)} fee={p.fee_rate}"
     )
