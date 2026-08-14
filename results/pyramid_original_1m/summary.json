@@ -1,0 +1,114 @@
+{
+  "baseline": {
+    "param_initial_pct": 0.05,
+    "param_dca_level_weights": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "param_sub_order_weights": [
+      1,
+      2,
+      4
+    ],
+    "param_dca_depths": [
+      0.03,
+      0.1,
+      0.25,
+      0.5
+    ],
+    "param_take_profit_pct": 0.01,
+    "param_fee_rate": 0.001,
+    "param_capital": 10000.0,
+    "param_reentry_delay_bars": 0,
+    "param_stop_loss_pct": 0.0,
+    "param_stop_loss_ref": "wap",
+    "param_max_hold_bars": 0,
+    "equity_final": 22526.524531794872,
+    "total_return_pct": 125.26524531794871,
+    "buy_hold_return_pct": 152.72041464275054,
+    "num_cycles": 1825,
+    "win_rate": 99.94520547945206,
+    "avg_pnl_pct": 0.777778379482284,
+    "max_drawdown_pct": 63.70575182924928,
+    "profit_factor": 1.97621221473025,
+    "total_fees": 6441.127984559726,
+    "avg_hold_bars": 1607.477808219178,
+    "median_hold_bars": 117.0,
+    "max_hold_bars_seen": 929126.0,
+    "tp_exits": 1824,
+    "sl_exits": 0,
+    "time_exits": 0
+  },
+  "final": {
+    "param_initial_pct": 0.05,
+    "param_dca_level_weights": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "param_sub_order_weights": [
+      1.0,
+      3.0,
+      5.0
+    ],
+    "param_dca_depths": [
+      0.03,
+      0.1,
+      0.25,
+      0.5
+    ],
+    "param_take_profit_pct": 0.05,
+    "param_fee_rate": 0.001,
+    "param_capital": 10000.0,
+    "param_reentry_delay_bars": 0,
+    "param_stop_loss_pct": 0.0,
+    "param_stop_loss_ref": "wap",
+    "param_max_hold_bars": 0,
+    "equity_final": 36286.52075503666,
+    "total_return_pct": 262.8652075503666,
+    "buy_hold_return_pct": 152.72041464275054,
+    "num_cycles": 196,
+    "win_rate": 99.48979591836735,
+    "avg_pnl_pct": 4.584195388948244,
+    "max_drawdown_pct": 63.52404134715835,
+    "profit_factor": 2.312280143970463,
+    "total_fees": 2073.8633887197784,
+    "avg_hold_bars": 14967.586734693878,
+    "median_hold_bars": 2031.5,
+    "max_hold_bars_seen": 934323.0,
+    "tp_exits": 195,
+    "sl_exits": 0,
+    "time_exits": 0
+  },
+  "best_params": {
+    "initial_pct": 0.05,
+    "dca_level_weights": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "sub_order_weights": [
+      1.0,
+      3.0,
+      5.0
+    ],
+    "dca_depths": [
+      0.03,
+      0.1,
+      0.25,
+      0.5
+    ],
+    "take_profit_pct": 0.05,
+    "fee_rate": 0.001,
+    "capital": 10000.0,
+    "reentry_delay_bars": 0,
+    "stop_loss_pct": 0.0,
+    "stop_loss_ref": "wap",
+    "max_hold_bars": 0
+  },
+  "improvement_return_pp": 137.5999622324179
+}

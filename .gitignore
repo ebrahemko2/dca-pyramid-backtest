@@ -18,3 +18,7 @@ data/merged/*_1m.csv
 .DS_Store
 .idea/
 .vscode/
+
+# Full 1m equity curves are huge; keep downsampled samples only
+results/**/equity_curve_baseline.csv
+results/**/equity_curve_final.csv

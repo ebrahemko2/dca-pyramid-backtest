@@ -133,6 +133,27 @@ Re-run: `python src/optimize_stoploss.py`
 Artifacts: `results/tf_1m/`, `results/tf_1m_crash_sl/`  
 Re-run: `python src/run_backtest_1m.py` · `python src/optimize_sl_1m_crash_first.py`
 
+## Original DCA Pyramid on 1m (as specified)
+
+Exact original rules on ETHUSDT 1m (2021-01→2026-07, 2.93M bars), then one-parameter-at-a-time optimization.
+
+| | Baseline (original) | Unconstrained opt | Pyramid-preserving opt |
+|--|--|--|--|
+| Return | **+125.3%** | **+262.9%** | **+325.2%** |
+| Max DD | 63.7% | 63.5% | 75.5% |
+| Cycles | 1,825 | 196 | 322 |
+| vs Buy&Hold (+152.7%) | under | **beats** | **beats** |
+
+**Baseline params:** init 5%, levels `1:2:4:8`, subs `1:2:4`, depths `3/10/25/50%`, TP `1%`, no SL.
+
+**Unconstrained best:** TP **5%**, subs **1:3:5**, rest unchanged (still classic level weights).
+
+**Pyramid-preserving best (recommended shape):** TP **3%**, init **8%**, depths **3/8/18/35%**, levels `1:2:4:8`, subs `1:2:4`.
+
+> On 1m the original slightly lags buy&hold; raising TP (and mildly reshaping depth/size) restores an edge, at the cost of fewer/longer cycles and still large drawdowns (no SL).
+
+Artifacts: `results/pyramid_original_1m/` · `python src/run_pyramid_original_1m.py`
+
 ## Staged Recovery (partial size + escalate after loss)
 
 Idea you proposed:
