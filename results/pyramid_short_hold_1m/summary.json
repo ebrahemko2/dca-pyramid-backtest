@@ -1,0 +1,216 @@
+{
+  "baseline": {
+    "label": "original",
+    "params": {
+      "initial_pct": 0.05,
+      "dca_level_weights": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "sub_order_weights": [
+        1,
+        2,
+        4
+      ],
+      "dca_depths": [
+        0.03,
+        0.1,
+        0.25,
+        0.5
+      ],
+      "take_profit_pct": 0.01,
+      "fee_rate": 0.001,
+      "capital": 10000.0,
+      "reentry_delay_bars": 0,
+      "stop_loss_pct": 0.0,
+      "stop_loss_ref": "wap",
+      "max_hold_bars": 0,
+      "breakeven_after_bars": 0,
+      "breakeven_buffer_pct": 0.001
+    },
+    "metrics": {
+      "equity_final": 22526.524531794872,
+      "total_return_pct": 125.26524531794871,
+      "buy_hold_return_pct": 152.72041464275054,
+      "num_cycles": 1825,
+      "win_rate": 99.94520547945206,
+      "avg_pnl_pct": 0.777778379482284,
+      "max_drawdown_pct": 63.70575182924928,
+      "profit_factor": 1.97621221473025,
+      "total_fees": 6441.127984559726,
+      "avg_hold_bars": 1607.477808219178,
+      "median_hold_bars": 117.0,
+      "max_hold_bars_seen": 929126.0,
+      "tp_exits": 1824,
+      "sl_exits": 0,
+      "time_exits": 0,
+      "breakeven_exits": 0
+    },
+    "score": -317.1201703251652,
+    "avg_hold_hours": 26.79129680365297,
+    "max_hold_hours": 15485.433333333332
+  },
+  "prior_long_hold": {
+    "label": "prior_long_hold",
+    "params": {
+      "initial_pct": 0.08,
+      "dca_level_weights": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "sub_order_weights": [
+        1,
+        2,
+        4
+      ],
+      "dca_depths": [
+        0.03,
+        0.08,
+        0.18,
+        0.35
+      ],
+      "take_profit_pct": 0.03,
+      "fee_rate": 0.001,
+      "capital": 10000.0,
+      "reentry_delay_bars": 0,
+      "stop_loss_pct": 0.0,
+      "stop_loss_ref": "wap",
+      "max_hold_bars": 0,
+      "breakeven_after_bars": 0,
+      "breakeven_buffer_pct": 0.001
+    },
+    "metrics": {
+      "equity_final": 42518.95965890283,
+      "total_return_pct": 325.18959658902827,
+      "buy_hold_return_pct": 152.72041464275054,
+      "num_cycles": 322,
+      "win_rate": 99.68944099378882,
+      "avg_pnl_pct": 2.688580331354787,
+      "max_drawdown_pct": 75.52104716308222,
+      "profit_factor": 2.6877481637842484,
+      "total_fees": 3864.893116188726,
+      "avg_hold_bars": 9110.7049689441,
+      "median_hold_bars": 917.5,
+      "max_hold_bars_seen": 1176618.0,
+      "tp_exits": 321,
+      "sl_exits": 0,
+      "time_exits": 0,
+      "breakeven_exits": 0
+    },
+    "score": -410.90442207320797,
+    "avg_hold_hours": 151.845082815735,
+    "max_hold_hours": 19610.3
+  },
+  "selected": {
+    "label": "selected",
+    "params": {
+      "initial_pct": 0.08,
+      "dca_level_weights": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "sub_order_weights": [
+        1,
+        2,
+        4
+      ],
+      "dca_depths": [
+        0.03,
+        0.08,
+        0.18,
+        0.35
+      ],
+      "take_profit_pct": 0.025,
+      "fee_rate": 0.001,
+      "capital": 10000.0,
+      "reentry_delay_bars": 0,
+      "stop_loss_pct": 0.28,
+      "stop_loss_ref": "wap",
+      "max_hold_bars": 0,
+      "breakeven_after_bars": 0,
+      "breakeven_buffer_pct": 0.001
+    },
+    "metrics": {
+      "equity_final": 46996.406566456426,
+      "total_return_pct": 369.96406566456426,
+      "buy_hold_return_pct": 152.72041464275054,
+      "num_cycles": 784,
+      "win_rate": 99.23469387755102,
+      "avg_pnl_pct": 2.0938495298663713,
+      "max_drawdown_pct": 57.868555517066135,
+      "profit_factor": 1.8917015807192623,
+      "total_fees": 7194.039922053079,
+      "avg_hold_bars": 3741.8966836734694,
+      "median_hold_bars": 682.0,
+      "max_hold_bars_seen": 156732.0,
+      "tp_exits": 778,
+      "sl_exits": 5,
+      "time_exits": 0,
+      "breakeven_exits": 0
+    },
+    "score": 143.357237426126,
+    "avg_hold_hours": 62.36494472789116,
+    "max_hold_hours": 2612.2
+  },
+  "best_score": {
+    "label": "best_score",
+    "params": {
+      "initial_pct": 0.08,
+      "dca_level_weights": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "sub_order_weights": [
+        1,
+        2,
+        4
+      ],
+      "dca_depths": [
+        0.03,
+        0.08,
+        0.18,
+        0.35
+      ],
+      "take_profit_pct": 0.025,
+      "fee_rate": 0.001,
+      "capital": 10000.0,
+      "reentry_delay_bars": 0,
+      "stop_loss_pct": 0.28,
+      "stop_loss_ref": "wap",
+      "max_hold_bars": 0,
+      "breakeven_after_bars": 0,
+      "breakeven_buffer_pct": 0.001
+    },
+    "metrics": {
+      "equity_final": 46996.406566456426,
+      "total_return_pct": 369.96406566456426,
+      "buy_hold_return_pct": 152.72041464275054,
+      "num_cycles": 784,
+      "win_rate": 99.23469387755102,
+      "avg_pnl_pct": 2.0938495298663713,
+      "max_drawdown_pct": 57.868555517066135,
+      "profit_factor": 1.8917015807192623,
+      "total_fees": 7194.039922053079,
+      "avg_hold_bars": 3741.8966836734694,
+      "median_hold_bars": 682.0,
+      "max_hold_bars_seen": 156732.0,
+      "tp_exits": 778,
+      "sl_exits": 5,
+      "time_exits": 0,
+      "breakeven_exits": 0
+    },
+    "score": 143.357237426126,
+    "avg_hold_hours": 62.36494472789116,
+    "max_hold_hours": 2612.2
+  },
+  "best_dual": null,
+  "elapsed_s": 356.7708511352539
+}
