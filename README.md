@@ -177,6 +177,47 @@ Findings on 1m:
 
 Artifacts: `results/pyramid_short_hold_1m/` · `python src/optimize_short_hold_1m.py`
 
+## Crash target: ≥5% flat monthly in all major crashes (1m)
+
+**Data:** ETHUSDT 1m from [Binance Vision](https://data.binance.vision/?prefix=data/spot/monthly/) monthly klines, merged 2021-01 → 2026-07 (2,933,647 bars).
+
+**Target definition (non-compounded):**  
+`flat_mo = total_return_pct / n_months` must be **≥ 5%** on **every** major crash window (profit measured vs initial capital for that window, spread evenly across months — not compounded).
+
+**Crash windows used**
+| Window | Dates | Months |
+|--------|-------|--------|
+| May 2021 | 2021-05 → 2021-07 | 3 |
+| Bear 2021–22 | 2021-11 → 2022-12 | 14 |
+| 2024–26 | 2024-12 → 2026-07 | 20 |
+
+**Search:** seeds + 36 random pyramid-family trials + coordinate descent (78 unique configs), then full-history validation of top-5 by `min_flat` across crashes.
+
+### Result: target **not met**
+
+No config achieved ≥5% flat/mo on **all three** crashes (0/78 had positive `min_flat` across all windows). Spot long-only DCA cannot reliably extract 5%/month through multi-year ETH bears under the 0.1% fee model.
+
+| Crash | Best-selected flat/mo | Window return | Months ≥5% of capital |
+|-------|----------------------|---------------|------------------------|
+| May 2021 | **+5.13%** | +15.4% | 67% |
+| 2021–22 | **−0.95%** | −13.3% | 21% |
+| 2024–26 | **−0.53%** | −10.5% | 15% |
+
+**Closest selected params:** init `8%`, depths `3/8/18/35%`, levels `1:2:4:8`, subs `1:3:5`, TP `2.5%`, SL `28% WAP`, soft BE after `168h`.
+
+### Full-history validation (same params)
+
+| Metric | Value |
+|--------|-------|
+| Return | **+216.0%** |
+| Flat monthly (non-compounded) | **+3.22%/mo** |
+| Max DD | 50.3% |
+| Months with ≥5% of capital | 53.7% |
+| Worst month vs capital | −55.7% |
+| Avg hold | ~53h |
+
+Artifacts: `results/crash_monthly_5pct/` · `python src/optimize_crash_monthly_5pct.py`
+
 ## Staged Recovery (partial size + escalate after loss)
 
 Idea you proposed:
@@ -233,6 +274,9 @@ python src/optimize_stoploss.py
 
 # Short-hold / higher-profit search on 1m (needs ETHUSDT_1m.csv)
 python src/optimize_short_hold_1m.py
+
+# Crash-first: seek >=5% flat monthly in all major crashes, then full validate
+python src/optimize_crash_monthly_5pct.py
 
 # Download only (use interval=1m via Python API for minute data)
 python src/download_data.py
