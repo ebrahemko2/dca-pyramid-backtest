@@ -289,26 +289,14 @@ def main() -> None:
     print(f"1m bars={len(df):,}  {df['datetime'].iloc[0]} .. {df['datetime'].iloc[-1]}", flush=True)
 
     auto = detect_crash_windows(df)
-    print("Auto-detected crash windows:", flush=True)
+    print("Auto-detected crash windows (info):", flush=True)
     for w in auto:
         print(f"  {w['name']} dd={w['dd']*100:.1f}% days={w['days']}", flush=True)
 
-    # Merge known + auto (unique by start/end)
-    crashes = { (c["start"], c["end"]): c for c in KNOWN_CRASHES }
-    for w in auto:
-        key = (w["start"], w["end"])
-        if key not in crashes:
-            # skip tiny / overlapping near-duplicates of known
-            crashes[key] = w
-    crash_list = sorted(crashes.values(), key=lambda x: x["start"])
-    # Keep the major ones: known always + auto with dd<=-45% and days>=90
-    crash_list = [
-        c
-        for c in crash_list
-        if c["name"].startswith("crash_")
-        or (c.get("dd", -1) <= -0.45 and c.get("days", 0) >= 90)
-    ]
-    print("Using crash set:", flush=True)
+    # Use major non-overlapping crash legs only (user goal: all major crashes).
+    # Auto legs are logged for transparency but not mixed in (they overlap known bears).
+    crash_list = list(KNOWN_CRASHES)
+    print("Using crash set (major only):", flush=True)
     slices: dict[str, pd.DataFrame] = {}
     for c in crash_list:
         sl = slice_df(df, c["start"], c["end"])

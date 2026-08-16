@@ -1,0 +1,470 @@
+{
+  "target": {
+    "flat_monthly_pct": 5.0,
+    "definition": "flat_mo = total_return_pct / n_months (non-compounded vs initial capital)",
+    "also_tracked": "calendar month pnl / capital0 >= 5%"
+  },
+  "data": {
+    "bars": 2933647,
+    "start": "2021-01-01 00:00:00+00:00",
+    "end": "2026-07-31 23:59:00+00:00"
+  },
+  "crashes_used": [
+    {
+      "name": "crash_2021_05",
+      "start": "2021-05-01",
+      "end": "2021-07-31"
+    },
+    {
+      "name": "crash_2021_22",
+      "start": "2021-11-01",
+      "end": "2022-12-31"
+    },
+    {
+      "name": "crash_2024_26",
+      "start": "2024-12-01",
+      "end": "2026-07-31"
+    }
+  ],
+  "target_met_all_crashes": false,
+  "selected": {
+    "params": {
+      "initial_pct": 0.08,
+      "dca_level_weights": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "sub_order_weights": [
+        1,
+        3,
+        5
+      ],
+      "dca_depths": [
+        0.03,
+        0.08,
+        0.18,
+        0.35
+      ],
+      "take_profit_pct": 0.025,
+      "fee_rate": 0.001,
+      "capital": 10000.0,
+      "reentry_delay_bars": 0,
+      "stop_loss_pct": 0.28,
+      "stop_loss_ref": "wap",
+      "max_hold_bars": 0,
+      "breakeven_after_bars": 10080,
+      "breakeven_buffer_pct": 0.001
+    },
+    "crash_min_flat_mo": -0.9508356628364023,
+    "crash_hits": 1,
+    "crash_all_hit": false,
+    "crash_detail": {
+      "crash_2021_05": {
+        "flat_mo": 5.1263302037133585,
+        "ret": 15.378990611140075,
+        "dd": 36.5553807979816,
+        "months": 3,
+        "pct_months_ge_5_capital": 66.66666666666666,
+        "min_month_vs_capital": 2.6045242328094353
+      },
+      "crash_2021_22": {
+        "flat_mo": -0.9508356628364023,
+        "ret": -13.311699279709632,
+        "dd": 50.34267966782509,
+        "months": 14,
+        "pct_months_ge_5_capital": 21.428571428571427,
+        "min_month_vs_capital": -20.400517490807708
+      },
+      "crash_2024_26": {
+        "flat_mo": -0.5259077930351069,
+        "ret": -10.518155860702139,
+        "dd": 38.42683172533802,
+        "months": 20,
+        "pct_months_ge_5_capital": 15.0,
+        "min_month_vs_capital": -15.758237991381083
+      }
+    },
+    "full": {
+      "ret": 216.03069215607354,
+      "dd": 50.34267966782507,
+      "flat_mo": 3.22433868889662,
+      "months": 67,
+      "pct_months_ge_5_capital": 53.73134328358209,
+      "min_month_vs_capital": -55.654718646876674,
+      "avg_month_vs_capital": 3.225072733743005,
+      "cycles": 927,
+      "avg_hold_hours": 52.74446242358864
+    }
+  },
+  "top_validated": [
+    {
+      "rank": 1,
+      "crash_min_flat_mo": -0.9508356628364023,
+      "crash_hits": 1,
+      "crash_all_hit": false,
+      "crash_score": -162.5359294647114,
+      "params": {
+        "initial_pct": 0.08,
+        "dca_level_weights": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "sub_order_weights": [
+          1,
+          3,
+          5
+        ],
+        "dca_depths": [
+          0.03,
+          0.08,
+          0.18,
+          0.35
+        ],
+        "take_profit_pct": 0.025,
+        "fee_rate": 0.001,
+        "capital": 10000.0,
+        "reentry_delay_bars": 0,
+        "stop_loss_pct": 0.28,
+        "stop_loss_ref": "wap",
+        "max_hold_bars": 0,
+        "breakeven_after_bars": 10080,
+        "breakeven_buffer_pct": 0.001
+      },
+      "full": {
+        "ret": 216.03069215607354,
+        "dd": 50.34267966782507,
+        "flat_mo": 3.22433868889662,
+        "months": 67,
+        "pct_months_ge_5_capital": 53.73134328358209,
+        "min_month_vs_capital": -55.654718646876674,
+        "avg_month_vs_capital": 3.225072733743005,
+        "cycles": 927,
+        "avg_hold_hours": 52.74446242358864
+      },
+      "crash_detail": {
+        "crash_2021_05": {
+          "flat_mo": 5.1263302037133585,
+          "ret": 15.378990611140075,
+          "dd": 36.5553807979816,
+          "months": 3,
+          "pct_months_ge_5_capital": 66.66666666666666,
+          "min_month_vs_capital": 2.6045242328094353
+        },
+        "crash_2021_22": {
+          "flat_mo": -0.9508356628364023,
+          "ret": -13.311699279709632,
+          "dd": 50.34267966782509,
+          "months": 14,
+          "pct_months_ge_5_capital": 21.428571428571427,
+          "min_month_vs_capital": -20.400517490807708
+        },
+        "crash_2024_26": {
+          "flat_mo": -0.5259077930351069,
+          "ret": -10.518155860702139,
+          "dd": 38.42683172533802,
+          "months": 20,
+          "pct_months_ge_5_capital": 15.0,
+          "min_month_vs_capital": -15.758237991381083
+        }
+      }
+    },
+    {
+      "rank": 2,
+      "crash_min_flat_mo": -1.0684544637593194,
+      "crash_hits": 1,
+      "crash_all_hit": false,
+      "crash_score": -165.80812806121403,
+      "params": {
+        "initial_pct": 0.08,
+        "dca_level_weights": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "sub_order_weights": [
+          1,
+          3,
+          5
+        ],
+        "dca_depths": [
+          0.03,
+          0.08,
+          0.18,
+          0.35
+        ],
+        "take_profit_pct": 0.025,
+        "fee_rate": 0.001,
+        "capital": 10000.0,
+        "reentry_delay_bars": 0,
+        "stop_loss_pct": 0.28,
+        "stop_loss_ref": "wap",
+        "max_hold_bars": 0,
+        "breakeven_after_bars": 7200,
+        "breakeven_buffer_pct": 0.001
+      },
+      "full": {
+        "ret": 188.7485561038615,
+        "dd": 51.89883804639436,
+        "flat_mo": 2.817142628415843,
+        "months": 67,
+        "pct_months_ge_5_capital": 52.23880597014925,
+        "min_month_vs_capital": -51.77423747005272,
+        "avg_month_vs_capital": 2.817815222899461,
+        "cycles": 969,
+        "avg_hold_hours": 50.45832473340214
+      },
+      "crash_detail": {
+        "crash_2021_05": {
+          "flat_mo": 5.1263302037133585,
+          "ret": 15.378990611140075,
+          "dd": 36.5553807979816,
+          "months": 3,
+          "pct_months_ge_5_capital": 66.66666666666666,
+          "min_month_vs_capital": 2.6045242328094353
+        },
+        "crash_2021_22": {
+          "flat_mo": -1.0684544637593194,
+          "ret": -14.958362492630473,
+          "dd": 51.89883804639428,
+          "months": 14,
+          "pct_months_ge_5_capital": 21.428571428571427,
+          "min_month_vs_capital": -22.03013819337957
+        },
+        "crash_2024_26": {
+          "flat_mo": -0.5547512456348525,
+          "ret": -11.095024912697049,
+          "dd": 38.84766875033572,
+          "months": 20,
+          "pct_months_ge_5_capital": 15.0,
+          "min_month_vs_capital": -15.745136007038981
+        }
+      }
+    },
+    {
+      "rank": 3,
+      "crash_min_flat_mo": -1.3118684981100748,
+      "crash_hits": 0,
+      "crash_all_hit": false,
+      "crash_score": -304.4886793433407,
+      "params": {
+        "initial_pct": 0.15,
+        "dca_level_weights": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "sub_order_weights": [
+          1,
+          2,
+          3
+        ],
+        "dca_depths": [
+          0.04,
+          0.12,
+          0.25,
+          0.45
+        ],
+        "take_profit_pct": 0.03,
+        "fee_rate": 0.001,
+        "capital": 10000.0,
+        "reentry_delay_bars": 0,
+        "stop_loss_pct": 0.3,
+        "stop_loss_ref": "wap",
+        "max_hold_bars": 10080,
+        "breakeven_after_bars": 10080,
+        "breakeven_buffer_pct": 0.001
+      },
+      "full": {
+        "ret": 101.8507796574478,
+        "dd": 35.86873085206919,
+        "flat_mo": 1.5201608904096686,
+        "months": 67,
+        "pct_months_ge_5_capital": 25.37313432835821,
+        "min_month_vs_capital": -22.398967065871656,
+        "avg_month_vs_capital": 1.520859371079649,
+        "cycles": 866,
+        "avg_hold_hours": 56.459719014626636
+      },
+      "crash_detail": {
+        "crash_2021_05": {
+          "flat_mo": 1.2024838747442719,
+          "ret": 3.607451624232816,
+          "dd": 31.675288216563864,
+          "months": 3,
+          "pct_months_ge_5_capital": 33.33333333333333,
+          "min_month_vs_capital": -3.590668255337532
+        },
+        "crash_2021_22": {
+          "flat_mo": -1.3118684981100748,
+          "ret": -18.366158973541047,
+          "dd": 35.91537782807699,
+          "months": 14,
+          "pct_months_ge_5_capital": 7.142857142857142,
+          "min_month_vs_capital": -9.795069294429668
+        },
+        "crash_2024_26": {
+          "flat_mo": -0.3177264244330752,
+          "ret": -6.354528488661504,
+          "dd": 22.022101696627594,
+          "months": 20,
+          "pct_months_ge_5_capital": 15.0,
+          "min_month_vs_capital": -7.560839279923092
+        }
+      }
+    },
+    {
+      "rank": 4,
+      "crash_min_flat_mo": -1.452193721736166,
+      "crash_hits": 0,
+      "crash_all_hit": false,
+      "crash_score": -318.189561303683,
+      "params": {
+        "initial_pct": 0.08,
+        "dca_level_weights": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "sub_order_weights": [
+          1,
+          3,
+          5
+        ],
+        "dca_depths": [
+          0.03,
+          0.08,
+          0.18,
+          0.35
+        ],
+        "take_profit_pct": 0.025,
+        "fee_rate": 0.001,
+        "capital": 10000.0,
+        "reentry_delay_bars": 0,
+        "stop_loss_pct": 0.28,
+        "stop_loss_ref": "wap",
+        "max_hold_bars": 10080,
+        "breakeven_after_bars": 0,
+        "breakeven_buffer_pct": 0.001
+      },
+      "full": {
+        "ret": 60.78106464798818,
+        "dd": 36.55538079798163,
+        "flat_mo": 0.9071800693729579,
+        "months": 67,
+        "pct_months_ge_5_capital": 26.865671641791046,
+        "min_month_vs_capital": -22.556194716292737,
+        "avg_month_vs_capital": 0.9076608605141391,
+        "cycles": 1238,
+        "avg_hold_hours": 39.49443995691976
+      },
+      "crash_detail": {
+        "crash_2021_05": {
+          "flat_mo": 0.9924017691208616,
+          "ret": 2.977205307362585,
+          "dd": 36.5553807979816,
+          "months": 3,
+          "pct_months_ge_5_capital": 0.0,
+          "min_month_vs_capital": -0.3855565435578865
+        },
+        "crash_2021_22": {
+          "flat_mo": -1.452193721736166,
+          "ret": -20.330712104306325,
+          "dd": 36.385244248063046,
+          "months": 14,
+          "pct_months_ge_5_capital": 7.142857142857142,
+          "min_month_vs_capital": -11.878732683132366
+        },
+        "crash_2024_26": {
+          "flat_mo": -0.28427977352177003,
+          "ret": -5.6855954704354,
+          "dd": 25.562376844405964,
+          "months": 20,
+          "pct_months_ge_5_capital": 10.0,
+          "min_month_vs_capital": -9.652532766696659
+        }
+      }
+    },
+    {
+      "rank": 5,
+      "crash_min_flat_mo": -1.622485839435157,
+      "crash_hits": 0,
+      "crash_all_hit": false,
+      "crash_score": -251.19472292018017,
+      "params": {
+        "initial_pct": 0.08,
+        "dca_level_weights": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "sub_order_weights": [
+          1,
+          2,
+          4
+        ],
+        "dca_depths": [
+          0.03,
+          0.1,
+          0.25,
+          0.5
+        ],
+        "take_profit_pct": 0.025,
+        "fee_rate": 0.001,
+        "capital": 10000.0,
+        "reentry_delay_bars": 0,
+        "stop_loss_pct": 0.28,
+        "stop_loss_ref": "wap",
+        "max_hold_bars": 0,
+        "breakeven_after_bars": 0,
+        "breakeven_buffer_pct": 0.001
+      },
+      "full": {
+        "ret": 101.70392743666379,
+        "dd": 43.35602874462316,
+        "flat_mo": 1.5179690662188625,
+        "months": 67,
+        "pct_months_ge_5_capital": 43.28358208955223,
+        "min_month_vs_capital": -47.69738977994174,
+        "avg_month_vs_capital": 1.5201233241461576,
+        "cycles": 671,
+        "avg_hold_hours": 72.86753601589666
+      },
+      "crash_detail": {
+        "crash_2021_05": {
+          "flat_mo": 4.808480020791209,
+          "ret": 14.425440062373628,
+          "dd": 27.481500143268118,
+          "months": 3,
+          "pct_months_ge_5_capital": 33.33333333333333,
+          "min_month_vs_capital": 1.1056949214149245
+        },
+        "crash_2021_22": {
+          "flat_mo": -1.622485839435157,
+          "ret": -22.714801752092196,
+          "dd": 43.35602874462318,
+          "months": 14,
+          "pct_months_ge_5_capital": 21.428571428571427,
+          "min_month_vs_capital": -13.003572366048003
+        },
+        "crash_2024_26": {
+          "flat_mo": -1.2222969884835755,
+          "ret": -24.44593976967151,
+          "dd": 36.53206230013426,
+          "months": 20,
+          "pct_months_ge_5_capital": 15.0,
+          "min_month_vs_capital": -17.866441700272645
+        }
+      }
+    }
+  ],
+  "elapsed_s": 370.0449204444885,
+  "trials": 78
+}
