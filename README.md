@@ -154,6 +154,29 @@ Exact original rules on ETHUSDT 1m (2021-01→2026-07, 2.93M bars), then one-par
 
 Artifacts: `results/pyramid_original_1m/` · `python src/run_pyramid_original_1m.py`
 
+## Short-hold + higher profit (1m, keep `1:2:4:8`)
+
+Goal: raise return **and** cut hold time vs the long-hold pyramid-preserving config. Soft breakeven / hard max-hold were tested; wide WAP stop-loss won.
+
+| | Original baseline | Prior long-hold (no SL) | **Selected (best score)** | Faster compromise |
+|--|--|--|--|--|
+| Return | +125.3% | +325.2% | **+370.0%** | +269.2% |
+| Max DD | 63.7% | 75.5% | **57.9%** | 59.6% |
+| Avg hold | 26.8h | 151.8h | **62.4h** | **30.8h** |
+| Max hold | ~15,485h | ~19,610h | **~2,612h** | ~2,446h |
+| Cycles | 1,825 | 322 | 784 | 1,586 |
+
+**Selected params:** init `8%`, depths `3/8/18/35%`, levels `1:2:4:8`, subs `1:2:4`, TP **2.5%**, SL **28% from WAP**, no time-stop / no soft-BE.
+
+**Faster compromise** (same skeleton, TP **1.5%** + SL **28% WAP**): near-baseline average hold with still much higher return than original.
+
+Findings on 1m:
+- Wide SL (~28–35% from WAP) is what cuts **max** hold and improves the return/hold tradeoff.
+- Forced exits (breakeven-after-N / max-hold ≤30d) shorten holds further but usually **lose** a lot of return.
+- No config beat baseline return while also staying ≤80% of baseline average hold (hard dual target).
+
+Artifacts: `results/pyramid_short_hold_1m/` · `python src/optimize_short_hold_1m.py`
+
 ## Staged Recovery (partial size + escalate after loss)
 
 Idea you proposed:
@@ -208,7 +231,10 @@ python src/run_backtest.py
 # Stop-loss optimization for inverted config
 python src/optimize_stoploss.py
 
-# Download only
+# Short-hold / higher-profit search on 1m (needs ETHUSDT_1m.csv)
+python src/optimize_short_hold_1m.py
+
+# Download only (use interval=1m via Python API for minute data)
 python src/download_data.py
 ```
 
