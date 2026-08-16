@@ -83,6 +83,10 @@ class StrategyParams:
     stop_loss_ref: str = "wap"
     # Time stop: 0 disables. Force-close after this many bars in cycle.
     max_hold_bars: int = 0
+    # Soft exit: after N bars, if High >= WAP*(1+buffer), exit at that price (breakeven+).
+    # 0 disables. Intended to cut long underwater holds without a hard loss.
+    breakeven_after_bars: int = 0
+    breakeven_buffer_pct: float = 0.001  # cover round-trip fee-ish
 
     def ladder(self) -> list[dict[str, float]]:
         return build_ladder(
@@ -136,6 +140,7 @@ class BacktestResult:
     tp_exits: int = 0
     sl_exits: int = 0
     time_exits: int = 0
+    breakeven_exits: int = 0
     cycles: list[TradeCycle] = field(default_factory=list)
     equity_curve: pd.Series | None = None
 
@@ -157,6 +162,7 @@ class BacktestResult:
             "tp_exits": self.tp_exits,
             "sl_exits": self.sl_exits,
             "time_exits": self.time_exits,
+            "breakeven_exits": self.breakeven_exits,
         }
 
 
@@ -172,8 +178,9 @@ def run_backtest(df: pd.DataFrame, params: StrategyParams | None = None) -> Back
       5. Optional SL: if bar low <= ref*(1-stop_loss_pct), exit at SL
          (adverse fill if TP and SL both possible same bar).
       6. Else if bar high >= TP, exit entire position at TP.
-      7. Optional time-stop: force close at bar close after max_hold_bars.
-      8. After exit, start a new cycle (optionally after delay).
+      7. Optional soft breakeven: after breakeven_after_bars, exit if High >= WAP*(1+buffer).
+      8. Optional time-stop: force close at bar close after max_hold_bars.
+      9. After exit, start a new cycle (optionally after delay).
 
     Capital is recycled cycle-to-cycle (compounding). Unfilled ladder cash stays idle
     until filled or cycle ends (unfilled cash remains cash).
@@ -333,6 +340,8 @@ def run_backtest(df: pd.DataFrame, params: StrategyParams | None = None) -> Back
             hit_tp = highs[i] >= tp_price
             hit_sl = sl_price > 0 and lows[i] <= sl_price
 
+            age = i - cycle_start_i + 1
+
             # Adverse assumption: if both TP and SL possible in same bar, take SL.
             if hit_sl:
                 close_cycle(i, sl_price, "stop_loss")
@@ -341,8 +350,17 @@ def run_backtest(df: pd.DataFrame, params: StrategyParams | None = None) -> Back
                 close_cycle(i, tp_price, "take_profit")
                 exited = True
             elif (
-                params.max_hold_bars > 0
-                and (i - cycle_start_i + 1) >= params.max_hold_bars
+                params.breakeven_after_bars > 0
+                and age >= params.breakeven_after_bars
+            ):
+                be_px = avg * (1.0 + params.breakeven_buffer_pct)
+                if highs[i] >= be_px:
+                    close_cycle(i, be_px, "breakeven")
+                    exited = True
+            if (
+                not exited
+                and params.max_hold_bars > 0
+                and age >= params.max_hold_bars
             ):
                 close_cycle(i, closes[i], "time_stop")
                 exited = True
@@ -364,6 +382,7 @@ def run_backtest(df: pd.DataFrame, params: StrategyParams | None = None) -> Back
     tp_exits = sum(1 for c in cycles if c.reason == "take_profit")
     sl_exits = sum(1 for c in cycles if c.reason == "stop_loss")
     time_exits = sum(1 for c in cycles if c.reason == "time_stop")
+    breakeven_exits = sum(1 for c in cycles if c.reason == "breakeven")
 
     # Win rate over all closed cycles (not only TP)
     wins = [c for c in cycles if c.pnl > 0]
@@ -392,6 +411,7 @@ def run_backtest(df: pd.DataFrame, params: StrategyParams | None = None) -> Back
         tp_exits=tp_exits,
         sl_exits=sl_exits,
         time_exits=time_exits,
+        breakeven_exits=breakeven_exits,
         cycles=cycles,
         equity_curve=equity_curve,
     )
@@ -417,11 +437,13 @@ def print_report(result: BacktestResult, title: str = "Backtest") -> None:
         f"{result.median_hold_bars:.1f} / {result.max_hold_bars_seen:.0f}"
     )
     print(
-        f"Exits TP/SL/Time    : {result.tp_exits} / {result.sl_exits} / {result.time_exits}"
+        f"Exits TP/SL/Time/BE  : {result.tp_exits} / {result.sl_exits} / "
+        f"{result.time_exits} / {result.breakeven_exits}"
     )
     print(
         f"Params: init={p.initial_pct:.3f} tp={p.take_profit_pct:.4f} "
         f"sl={p.stop_loss_pct:.4f}({p.stop_loss_ref}) max_hold={p.max_hold_bars} "
+        f"be_after={p.breakeven_after_bars} "
         f"depths={list(p.dca_depths)} lvl_w={list(p.dca_level_weights)} "
         f"sub_w={list(p.sub_order_weights)} fee={p.fee_rate}"
     )
